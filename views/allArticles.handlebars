@@ -1,0 +1,16 @@
+<div>
+    All Articles
+    <ul>
+    {{#each articles}}
+        
+            <li>
+                <img src="{{this.imgUrl}}" />
+                <div>{{this.title}}</div>
+                <div>{{this.author}}</div>
+                <div>{{this.summary}}</div>
+                <div>{{this.title}}</div>
+            </li>
+        
+    {{/each }}
+    </ul>
+</div>

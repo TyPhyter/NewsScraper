@@ -1,7 +1,12 @@
 const express = require('express');
 const router = express.Router();
-const cheerio = require("cheerio");
-const request = require("request");
+
+const cheerio = require('cheerio');
+const request = require('request');
+
+var mongoose = require("mongoose");
+const Article = require('../models/Article');
+
 //vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
 // const BURG = require('../models/burger');
 
@@ -16,6 +21,17 @@ router.get('/articles/:id?', (req, res) => {
     }
     else {
         //send the info for all articles
+        const articles = [];
+        Article.find({})
+            .then((docs) => {
+                docs.forEach((doc) => {
+                    articles.push(doc);
+                });
+            })
+            .catch((err) =>{
+                console.log(err);
+            });
+        res.render('allArticles', {articles});
     }
 });
 
@@ -28,15 +44,24 @@ router.post('/scrape', (req, res) => {
         const articles = $('.post-block');
         // console.log(articles);
         articles.each(function (i, element) {
-            console.log(element);
-            let article = {}; $(this)
+            // console.log(element);
+            let article = {};
             article.title = $(this).find('h2.post-block__title').text().trim();
             article.summary = $(this).find('div.post-block__content').text().trim();
             article.author = $(this).find('span.river-byline__authors').text().trim();
             article.url = $(this).find('a.post-block__title__link').attr('href').trim();
+            article.imgUrl = $(this).find('footer figure a img').attr('src');
             results.push(article);
+            //TO DO: check if article record exists before saving
+            Article.create(article)
+                .then((doc) => {
+                    console.log(doc);
+                })
+                .catch((err) => {
+                    console.log(err);
+                });
         });
-
+        //Send the full results of the scrape for display on the front end
         res.json(results);
 
     });
