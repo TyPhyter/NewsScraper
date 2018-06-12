@@ -5,6 +5,7 @@ const cheerio = require('cheerio');
 const request = require('request');
 
 var mongoose = require("mongoose");
+const findOrCreate = require('mongoose-find-or-create');
 const Article = require('../models/Article');
 
 //vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
@@ -50,16 +51,18 @@ router.post('/scrape', (req, res) => {
             article.summary = $(this).find('div.post-block__content').text().trim();
             article.author = $(this).find('span.river-byline__authors').text().trim();
             article.url = $(this).find('a.post-block__title__link').attr('href').trim();
-            article.imgUrl = $(this).find('footer figure a img').attr('src');
+            //if the image exists
+            if($(this).find('footer img').attr('src')){
+                article.imgUrl = $(this).find('footer img').attr('src').split(/w=1[0-9][0-9][0-9][?]/).join('');
+            }
+            // console.log(article);
             results.push(article);
-            //TO DO: check if article record exists before saving
-            Article.create(article)
-                .then((doc) => {
-                    console.log(doc);
-                })
-                .catch((err) => {
-                    console.log(err);
-                });
+            
+            Article.findOrCreate({ title: article.title }, article, (err, doc) => {
+                if(err) console.log(err);
+                console.log(doc);
+            });
+                
         });
         //Send the full results of the scrape for display on the front end
         res.json(results);

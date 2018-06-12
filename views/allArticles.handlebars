@@ -4,11 +4,12 @@
     {{#each articles}}
         
             <li>
+                {{#if this.imgUrl}}
                 <img src="{{this.imgUrl}}" />
+                {{/if}}
                 <div>{{this.title}}</div>
                 <div>{{this.author}}</div>
                 <div>{{this.summary}}</div>
-                <div>{{this.title}}</div>
             </li>
         
     {{/each }}
