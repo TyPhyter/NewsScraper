@@ -1,17 +1,111 @@
-<div>
-    All Articles
+<div class="container">
+    <h3>All Articles</h3>
     <ul>
-    {{#each articles}}
-        
-            <li>
-                {{#if this.imgUrl}}
-                <img src="{{this.imgUrl}}" />
-                {{/if}}
-                <div>{{this.title}}</div>
-                <div>{{this.author}}</div>
-                <div>{{this.summary}}</div>
-            </li>
-        
-    {{/each }}
+        <div class="row">
+            {{#each articles}}
+            <div class="col-xs-6 col-md-4">
+                <li class="card">
+                    <div class="card-img">
+                        <div class="myOverlay">COMMENT</div>
+                        {{#if this.imgUrl}}
+                        <img src="{{this.imgUrl}}" /> 
+                        {{/if}} 
+                        {{#else}} {{!-- change this url to placholder vvvvvvvvvvvvvvvvvvvvvvvvvvvv --}}
+                        <img src="{{this.imgUrl}}" /> 
+                        {{/else}}
+                    </div>
+
+                    <p class="mb-0">
+                        <strong>{{this.title}}</strong>
+                    </p>
+                    <p class="mt-0">
+                        <em>By {{this.author}}</em>
+                    </p>
+                    <p>{{this.summary}}</p>
+                </li>
+            </div>
+
+            {{/each }}
+        </div>
     </ul>
 </div>
+{{!-- MODAL --}}
+<div class="modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Modal title</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Modal body text goes here.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary">Save changes</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<style>
+    .card {
+        max-width: 300px;
+        height: 350px;
+        font-size: 12px;
+        margin: 10px;
+        overflow: hidden;
+        transition: all .1s linear;
+    }
+
+    .card-img {
+        position: relative;
+        width: 100%;
+        height: auto;
+        max-height: 160px;
+    }
+
+    .card img {
+        width: 100%;
+        height: auto;
+        max-height: 160px;
+    }
+
+    .card:hover {
+        transform: scale(1.05);
+    }
+
+    .card:hover .myOverlay {
+        visibility: visible;
+        background: rgba(0, 0, 0, 0.8);
+    }
+
+    p {
+        margin: 10px;
+    }
+
+    .myOverlay {
+        position: absolute;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        max-height: 160px;
+        z-index: 2;
+        transition: all .1s linear;
+        visibility: hidden;
+        color: rgba(255, 255, 255, .8);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+</style>
+<script>
+    const cards = document.querySelectorAll('.card');
+    cards.forEach((card) => {
+        card.addEventListener('click', (evt) => {
+            console.log('click');
+        });
+    });
+</script>

@@ -8,9 +8,6 @@ var mongoose = require("mongoose");
 const findOrCreate = require('mongoose-find-or-create');
 const Article = require('../models/Article');
 
-//vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
-// const BURG = require('../models/burger');
-
 router.get('/', (req, res) => {
     res.send('Hello World');
 });
@@ -21,9 +18,9 @@ router.get('/articles/:id?', (req, res) => {
         //send the info for a specific article
     }
     else {
-        //send the info for all articles
         const articles = [];
-        Article.find({})
+        //sort by most recent insertion first
+        Article.find({}).sort({ '_id' : -1 })
             .then((docs) => {
                 docs.forEach((doc) => {
                     articles.push(doc);
@@ -57,14 +54,14 @@ router.post('/scrape', (req, res) => {
             }
             // console.log(article);
             results.push(article);
-            
+            //create new article ONLY IF no article with the same title exists
             Article.findOrCreate({ title: article.title }, article, (err, doc) => {
                 if(err) console.log(err);
                 console.log(doc);
             });
                 
         });
-        //Send the full results of the scrape for display on the front end
+        
         res.json(results);
 
     });
