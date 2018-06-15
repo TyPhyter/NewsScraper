@@ -25,11 +25,12 @@ router.get('/articles/:id?', (req, res) => {
                 docs.forEach((doc) => {
                     articles.push(doc);
                 });
+                res.render('allArticles', {articles});
             })
             .catch((err) =>{
                 console.log(err);
             });
-        res.render('allArticles', {articles});
+        
     }
 });
 
