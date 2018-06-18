@@ -21,8 +21,10 @@
                             </a>
                         </div>
                         {{#if this.imgUrl}}
-                        <img src="{{this.imgUrl}}" /> {{/if}} {{#else}} {{!-- change this url to placholder vvvvvvvvvvvvvvvvvvvvvvvvvvvv --}}
-                        <img src="{{this.imgUrl}}" /> {{/else}}
+                        <img src="{{this.imgUrl}}" /> {{/if}} 
+                        {{#else}} {{!-- change this url to placholder vvvvvvvvvvvvvvvvvvvvvvvvvvvv --}}
+                        <img src="{{this.imgUrl}}" /> 
+                        {{/else}}
                     </div>
 
                     <p class="mb-0">
@@ -171,7 +173,7 @@
                 while (commentContainer.firstChild) commentContainer.removeChild(commentContainer.firstChild);
                 document.querySelector('#saveComment').setAttribute('data-currentArticleId', id);
 
-                fetch(`http://localhost:8080/articles/${id}`)
+                fetch(`http://morning-plains-89336.herokuapp.com//articles/${id}`)
                     .then((response) => {
                         return response.json();
                     })
@@ -203,7 +205,7 @@
             });
             console.log(body);
             console.log(comment);
-            fetch('http://localhost:8080/comment', {
+            fetch('http://morning-plains-89336.herokuapp.com/comment', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
