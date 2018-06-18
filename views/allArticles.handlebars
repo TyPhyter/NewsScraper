@@ -1,5 +1,12 @@
+<nav class="navbar navbar-dark bg-dark">
+    <a class="navbar-brand" href="#">
+        <div class="container">
+            TECHMUNCH
+        </div>
+
+    </a>
+</nav>
 <div class="container">
-    <h3>All Articles</h3>
     <ul>
         <div class="row">
             {{#each articles}}
@@ -160,8 +167,8 @@
                 const id = evt.target.getAttribute('data-id') || evt.target.parentNode.getAttribute('data-id');
                 console.log(id);
                 $articleModal.modal('toggle');
-                
-                while(commentContainer.firstChild) commentContainer.removeChild(commentContainer.firstChild);
+
+                while (commentContainer.firstChild) commentContainer.removeChild(commentContainer.firstChild);
                 document.querySelector('#saveComment').setAttribute('data-currentArticleId', id);
 
                 fetch(`http://localhost:8080/articles/${id}`)
@@ -170,7 +177,7 @@
                     })
                     .then((json) => {
                         console.log(json);
-            
+
                         json[0].comments.forEach((comment) => {
                             var newComment = document.createElement('div');
                             newComment.classList.add('commentCard');
@@ -203,19 +210,19 @@
                 },
                 body: body,
             })
-            .then((data) => {
-                console.log('Request success: ', data);
-                document.querySelector('.modal-footer input').value = '';
-                var newComment = document.createElement('div');
-                newComment.classList.add('commentCard');
-                var commentText = document.createElement('p');
-                commentText.textContent = comment;
-                newComment.appendChild(commentText);
-                commentContainer.appendChild(newComment);
-            })
-            .catch((error) => {
-                console.log('Request failure: ', error);
-            });
+                .then((data) => {
+                    console.log('Request success: ', data);
+                    document.querySelector('.modal-footer input').value = '';
+                    var newComment = document.createElement('div');
+                    newComment.classList.add('commentCard');
+                    var commentText = document.createElement('p');
+                    commentText.textContent = comment;
+                    newComment.appendChild(commentText);
+                    commentContainer.appendChild(newComment);
+                })
+                .catch((error) => {
+                    console.log('Request failure: ', error);
+                });
         });
 
     });
