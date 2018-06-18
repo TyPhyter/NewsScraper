@@ -15,7 +15,15 @@ router.get('/', (req, res) => {
 router.get('/articles/:id?', (req, res) => {
     const id = req.params.id || null;
     if(id) {
-        //send the info for a specific article
+        Article.find({ '_id': mongoose.Types.ObjectId(id)})
+            .then((doc) => {
+                console.log(doc);
+                res.json(doc);
+            })
+            .catch((err) => {
+                console.log(err);
+                res.status(500).send();
+            });
     }
     else {
         const articles = [];
@@ -66,6 +74,21 @@ router.post('/scrape', (req, res) => {
         res.json(results);
 
     });
+});
+//vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
+router.post('/comment', (req, res) => {
+    console.log(req.body);
+    const articleOid = mongoose.Types.ObjectId(req.body.article_id.toString());
+    const comment = req.body.comment;
+    console.log(articleOid, comment);
+    Article.findOneAndUpdate({ '_id': articleOid}, { $push: { comments: comment}})
+        .then((response) => {
+            console.log(response);
+            res.send(response)
+        })
+        .catch((err) => {
+            console.log(err);
+        });
 });
 
 module.exports = router;

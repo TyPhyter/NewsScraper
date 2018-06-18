@@ -28,6 +28,10 @@ const ArticleSchema = new Schema({
         type: String
     },
 
+    comments: {
+        type: [String]
+    }
+
 });
 
 ArticleSchema.plugin(findOrCreate);
