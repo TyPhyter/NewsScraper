@@ -173,7 +173,7 @@
                 while (commentContainer.firstChild) commentContainer.removeChild(commentContainer.firstChild);
                 document.querySelector('#saveComment').setAttribute('data-currentArticleId', id);
 
-                fetch(`https://morning-plains-89336.herokuapp.com//articles/${id}`)
+                fetch(`https://morning-plains-89336.herokuapp.com/articles/${id}`)
                     .then((response) => {
                         return response.json();
                     })
